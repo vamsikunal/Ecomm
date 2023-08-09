@@ -1,0 +1,63 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block title %}
+ Signin 
+{% endblock %}
+
+{% block content %}
+
+<!-- ========================= SECTION CONTENT ========================= -->
+
+<section class="section-conten padding-y" style="min-height:84vh">
+
+  {% if request.GET.command == 'verification' %}
+
+  <div class="container mx-auto alert alert-info text-center" role="alert" style="max-width: 1024px; margin-top:100px;">
+  Thank you for registering with us. We have sent you a verification email to your email address [{{ request.GET.email }}]
+  <br><br>
+  Already verified? <a href="{% url 'login' %}">Login</a>
+  </div>
+
+{% else %}
+<!-- ============================ COMPONENT LOGIN   ================================= -->
+	<div class="card mx-auto" style="max-width: 380px; margin-top:100px;">
+      <div class="card-body">
+        {% if flag %}
+        {% include 'alert.html' %}
+      <h4 class="card-title mb-4">Sign in</h4>
+      {% if not user.is_authenticated %}
+      <form action="{% url 'login' %}" method="post" >
+          {% csrf_token %}
+          <div class="form-floating mb-3">
+            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" name="email">
+            <label for="floatingInput">Email address</label>
+          </div>
+          <div class="form-floating">
+            <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name='password'>
+            <label for="floatingPassword">Password</label>
+          </div>
+          <div class="form-group">
+          	<a href="{% url 'forgotpassword' %}" class="float-end"><p>Forgot password</p></a> 
+          </div> <!-- form-group form-check .// --><br>
+          <div class="form-group">
+              <input type="submit" class="btn btn-primary btn-block col-12" value='Login'>
+          </div> <!-- form-group// -->    
+      </form>
+      {% endif %}
+      {% else %}
+      {% include 'alert.html' %}
+      <a href="{% url 'otp_generation' %}">Generate OTP</a></p>
+       {% endif %} 
+      </div> <!-- card-body.// -->
+    </div> <!-- card .// -->
+
+     <p class="text-center mt-4">Don't have account? <a href="{% url 'register' %}">Sign up</a></p>
+     <br><br>
+<!-- ============================ COMPONENT LOGIN  END.// ================================= -->
+{% endif %}
+
+
+
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+{% endblock %}

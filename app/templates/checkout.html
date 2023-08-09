@@ -1,0 +1,95 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block title %}
+Checkout
+{% endblock %}
+
+{% block content %}
+
+<section class="section-content padding-y bg">
+    <div class="container">
+    <!-- ============================ COMPONENT 2 ================================= -->
+ 
+    <div class="row justify-content-md-center">
+            <main class="col-md-7">
+                {% include 'alert.html' %}
+    <article class="card mb-4">
+        <div class="card-header">
+            <h4>Review cart</h4>
+           </div>
+    <div class="card-body">
+        <div class="row">
+            {% for cart_item in cart_items %}
+            <div class="col-md-6">
+                <figure class="itemside  mb-4">
+                    <div class="aside"><img src="{{cart_item.product.product_image.url}}" class="border img-sm"></div>
+                    <figcaption class="info">
+                        <p>{{cart_item.product.product_name}}</p>
+                        <span class="text-muted">{{cart_item.quantity}}x = ${{ cart_item.sub_total }} </span>
+                    </figcaption>
+                </figure>
+            </div> <!-- col.// -->
+            {% endfor %}
+        </div> <!-- row.// -->
+    </div> <!-- card-body.// -->
+    </article> <!-- card.// -->
+    <article class="card mb-4">
+        <div class="card-header">
+           <h4>Delivery Address</h4> 
+          </div>
+       <form method='post'>
+    <div class="card-body">
+        {% for address in saved_address %}
+        {% csrf_token %}
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="address" id="flexRadioDefault1" value="{{address.pk}}">
+            <h6 class="form-check-label">
+             {{address.name}}    {{address.phone_number}}
+            </h6>
+            <p>{{address.address}}, {{address.landmark}}, {{address.city}}, {{address.state}}</p>
+          </div>
+          <br>
+        {% endfor %}
+        <hr>
+        <button type="submit" class="btn btn-primary btn-block">  Select address </button>     </form> 
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addressForm">
+            Add new address
+          </button>
+          {% include 'new_address.html' %}
+    </div> <!-- card-body.// -->
+    </article> <!-- card.// -->
+           
+    </article> 
+    <!-- accordion end.// -->
+      
+            </main> <!-- col.// -->
+            <aside class="col-md-3">
+                <div class="card">
+            <div class="card-body">
+                <dl class="dlist-align">
+                  <dt>Total price:</dt>
+                  <dd class="text-end">${{cart.cart_price}}</dd>
+                </dl>
+                <dl class="dlist-align">
+                  <dt>Tax:</dt>
+                  <dd class="text-end"> ${{cart.tax}}</dd>
+                </dl>
+                <dl class="dlist-align">
+                  <dt>Total:</dt>
+                  <dd class="text-end text-dark b"><strong>${{cart.total_price}}</strong></dd>
+                </dl>
+                <hr>
+                <a href="{% url 'cart' %}" class="btn btn-light btn-block col-12">Edit cart</a>
+                
+            </div> <!-- card-body.// -->
+            </div> <!-- card.// -->
+            </aside> <!-- col.// -->
+        </div> <!-- row.// -->
+    <!-- ============================ COMPONENT 2 END//  ================================= -->
+    </div> <!-- container .//  -->
+    </section>
+    <script src="{% static 'js/pincode.js' %}" type="text/javascript"></script>
+
+    <!-- ========================= SECTION CONTENT END// ========================= -->
+    
+{% endblock %}

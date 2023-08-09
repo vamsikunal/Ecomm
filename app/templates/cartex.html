@@ -1,0 +1,137 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block title %}
+Cart
+{% endblock %}
+
+{% block content %}
+<section class="section-content padding-y bg">
+<div class="container">
+
+<!-- ============================ COMPONENT 1 ================================= -->
+{% if  not cart_items %}
+<div class="col-lg-9">
+	<div class="card">
+		<h3 class="display-5" style="text-align: center;">Your shopping cart is empty</h3>
+		<div class="text-center"><br>
+			<a href="{% url 'store:store' %}" class="btn btn-primary btn-block col-3"> Continue Shopping </a>
+		</div><br>
+</div>
+</div>
+{% else %}
+<div class="row">
+	<aside class="col-lg-9">
+<div class="card">
+<table class="table table-borderless table-shopping-cart">
+<thead class="text-muted">
+<tr class="small text-uppercase">
+  <th scope="col">Product</th>
+  <th scope="col" width="120">Quantity</th>
+  <th scope="col" width="120">Price</th>
+  <th scope="col" class="text-right" width="200"> </th>
+</tr>
+</thead>
+<tbody>
+{% for cart_item in cart_items %}
+<tr>
+	<td>
+		<figure class="itemside align-items-center">
+			<div class="aside"><img src="{{cart_item.product.product_image.url}}" class="img-sm"></div>
+			<figcaption class="info">
+				<a href="{{ cart_item.product.get_url }}" class="title text-dark">{{cart_item.product.product_name}}</a>
+				<p class="text-muted small">Matrix: 25 Mpx <br> Category:{{cart_item.product.product_name}}</p>
+			</figcaption>
+		</figure>
+	</td>
+	<td> 
+		<!-- col.// -->
+					<div class="col"> 
+						<div class="input-group input-spinner">
+							<div class="input-group-prepend">
+							<a href="{% url 'remove_cart'  cart_item.product.id %}" class="btn btn-light" type="button" id="button-plus"> <i class="fa fa-minus"></i> </a>
+							</div>
+							<input type="text" class="form-control"  value="{{cart_item.quantity}}">
+							<div class="input-group-append">
+							<a href="{% url 'add_cart'  cart_item.product.id %}"  class="btn btn-light" type="button" id="button-minus"> <i class="fa fa-plus"></i> </a>
+							</div>
+						</div> <!-- input-group.// -->
+					</div> <!-- col.// -->
+	</td>
+	<td> 
+		<div class="price-wrap"> 
+			<var class="price">${{ cart_item.sub_total }}</var> 
+			<small class="text-muted"> ${{cart_item.product.price}} each </small> 
+		</div> <!-- price-wrap .// -->
+	</td>
+	<td class="text-right"> 
+	<a href="{% url 'remove_cart_item'  cart_item.product.id %}" class="btn btn-danger"> Remove</a>
+	</td>
+</tr>
+{% endfor %}
+<br>
+{% include 'alert.html' %}
+</tbody>
+</table>
+</div> <!-- card.// -->
+<br>
+<div class='card'>
+ <div class="card-header"><h5 class="card-title"> Wishlisted </h5></div>
+
+ <div class="card-body">
+	<div class="row">
+     {% for item in wishlist_items %}
+	<div class="card col-5 m-4">
+		<div class="row g-0">
+		  <div class="col-md-4">
+			<img src="{{item.product.product_image.url}}" class="img-fluid rounded-start" alt="Product Image">
+		  </div>
+		  <div class="col-md-8">
+			<div class="card-body">
+			  <h5 class="card-title">{{item.product.product_name}}</h5>
+			  <p class="card-text">{{item.product.product_description}}</p>
+			  <a href="{% url 'add_cart'  item.product.id %}" class="btn  btn-primary"> <span class="text">Move to Cart</span>   </a>
+			</div>
+		  </div>
+		</div>
+	  </div>
+     {% endfor %}
+ </div>
+</div>
+</div>
+	</aside> <!-- col.// -->
+	<aside class="col-lg-3">
+
+		<div class="card">
+		<div class="card-body">
+			<dl class="dlist-align">
+			  <dt>Total price:</dt>
+			  <dd class="text-end">${{cart.cart_price}}</dd>
+			</dl>
+			<dl class="dlist-align">
+			  <dt>Tax:</dt>
+			  <dd class="text-end"> ${{cart.tax}}</dd>
+			</dl>
+			<dl class="dlist-align">
+			  <dt>Total:</dt>
+			  <dd class="text-end text-dark b"><strong>${{cart.total_price}}</strong></dd>
+			</dl>
+			<hr>
+			<p class="text-center mb-3">
+				<img src="{% static '/images/misc/payments.png' %}" height="26">
+			</p>
+			<a href="{% url 'checkout' %}" class="btn btn-primary btn-block col-12"> Checkout </a> <hr>
+			<a href="{% url 'store:store' %}" class="btn btn-light btn-block col-12" >Continue Shopping</a>
+		</div> <!-- card-body.// -->
+		</div> <!-- card.// -->
+
+</aside> <!-- col.// -->
+</div> <!-- row.// -->
+{% endif %}
+<!-- ============================ COMPONENT 1 END .// ================================= -->
+
+</div> <!-- container .//  -->
+</section>
+{% endblock %}
+<!-- ========================= SECTION CONTENT END// ========================= -->
+</body>
+</html>

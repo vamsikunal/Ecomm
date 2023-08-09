@@ -1,0 +1,59 @@
+{% load static %}
+<div class="modal fade" id="addressForm" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="ModalLabel">Add new address</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+                  <form action="{% url 'new_address' %}" method='post'>
+                    <input type="hidden" name="next" value="{{ request.path }}">
+              {% csrf_token %}
+              <div class="row">
+                  <div class="form-group col-sm-6">
+                      <label>Name</label>
+                      {{address_form.name}}
+                  </div>
+                      <div class="form-group col-sm-6">
+                          <label>Phone Number</label>
+                          {{address_form.phone_number}}
+                      </div>
+                      <div class="form-group col-sm-6">
+                          <label>Pincode</label>
+                          {{address_form.pincode}}
+                      </div>
+                      <div class="form-group col-sm-6">
+                          <label>Locality</label>
+                          <select class="form-control" id="locality" name='locality'> </select>
+                      </div>
+                      <div class="form-group col-sm-12">
+                          <label>Address</label>
+                          {{address_form.address}}
+                      </div>
+                      <div class="form-group col-sm-4">
+                          <label>City/Town/District</label>
+                          {{address_form.city}}
+                      </div>
+                      <div class="form-group col-sm-4">
+                          <label>State</label>
+                          {{address_form.state}}
+                      </div>
+                      <div class="form-group col-sm-4">
+                          <label>Landmark(optional)</label>
+                          {{address_form.landmark}}
+                      </div>
+              </div> <!-- row.// -->  
+              <div class="form-group">
+                  <br>
+              </div> <!-- form-group// -->
+          
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary btn-block col-md-3"> Add </button>
+        </form>
+        </div>
+      </div>
+    </div>
+    </div>

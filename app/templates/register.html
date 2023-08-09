@@ -1,0 +1,71 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block title %}
+ Welcome
+{% endblock %}
+
+{% block content %}
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-content padding-y">
+
+	<!-- ============================ COMPONENT REGISTER   ================================= -->
+		<div class="card mx-auto" style="max-width:520px; margin-top:40px;">
+		  <article class="card-body">
+			<header class="mb-4"><h4 class="card-title">Sign up</h4></header>
+			{% include 'alert.html' %}
+			{% if form.errors %}
+			<div class='alert alert-danger pb-0'> 
+			<button type="button" class="btn-close position-absolute top-0 end-0" aria-label="Close" data-dismiss="alert"></button>
+			{{form.email.errors}}
+			{{form.non_field_errors}}
+			{{form.phone_number.errors}}
+			</div>
+			{% endif %}
+			<form action="{% url 'register' %}" method="POST">
+		  {% csrf_token %}
+		<div class="row">
+			<div class="col-6 form-group">
+				<label class="form-label my-2">First name</label>
+					{{ form.first_name }}
+			</div> <!-- form-group end.// -->
+			<div class="col-6 form-group">
+				<label class="form-label my-2">Last name</label>
+					{{ form.last_name }}
+			</div> <!-- form-group end.// -->
+			<div class="form-group col-12">
+				<labe class="form-label my-2">Email Address</label>
+				{{form.email}}
+			</div> <!-- form-group end.// -->	
+			<div class="form-group col-3">
+				<label class="form-label my-2">Phone Number</label>
+				<input type="text" id="disabledTextInput" class="form-control" placeholder="India +91" disabled>
+			</div> <!-- form-group end.// -->	
+			<div class="form-group col-9">
+				<label class="form-label my-2">Phone Number</label>
+				{{form.phone_number}}
+			</div> <!-- form-group end.// -->
+			<div class="form-group col-6">
+				<label class="form-label my-2">Create password</label>
+				{{ form.password }}
+			</div> <!-- form-group end.// -->
+			<div class="form-group col-6">
+				<label class="form-label my-2">Repeat password</label>
+				{{form.confirm_password}}
+			</div> <!-- form-group end.// -->
+		</div> 
+		<br>
+					<div class="form-group">
+						<button type="submit" class="btn btn-primary btn-block"> Register  </button>
+					</div> <!-- form-group// -->
+				</form><br>
+			</div>	
+			</article><!-- card-body.// -->
+		</div> <!-- card .// -->
+		<p class="text-center mt-4">Have an account? <a href="{% url 'login' %}">Log In</a></p>
+		<br><br>
+	<!-- ============================ COMPONENT REGISTER  END.// ================================= -->
+	
+	
+	</section>
+	
+{% endblock %}

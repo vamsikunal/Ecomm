@@ -1,0 +1,153 @@
+{% extends 'index.html' %}
+
+
+{% block content %}
+
+<section class="section-content padding-y bg">
+    <div class="container">
+    <div class="row">
+        <div class=col-lg-5>
+            <div class='card sticky-top' style="z-index: 0;">
+
+			
+                        {% if product_exist_in_wishlist %}
+                        <div class="heart  is-active" id="heart" onclick="likeFunction()"></div>
+                        {% else %}
+                        <div class="heart" id="heart" onclick="likeFunction()"></div>
+                        {% endif %}
+					
+
+        
+    <article class="gallery-wrap"> 
+        <div class="img-big-wrap text-center">
+          <img src="{{single_product.product_image.url }}" class="img-fluid" style="z-index: -1;">
+        </div> <!-- img-big-wrap.// -->
+    </article> <!-- gallery-wrap .end// -->
+
+	<div class="d-grid col-9 mx-auto">
+		{% if single_product.stock <=  0 %}
+		<h5 style="text-align: center;color: RED;"> Out of stock </h5>
+		{% else %}
+		{% if in_cart%}
+		<a href="{% url 'cart' %}" class="btn  btn-success btn-lg"> <span class="text">Already in cart</span> <i class="fas fa-shopping-cart"></i>  </a>
+		{% else %}
+		<a href="{% url 'add_cart'  single_product.id %}" class="btn  btn-primary btn-lg"> <span class="text">Add to cart</span> <i class="fas fa-shopping-cart"></i>  </a>
+		{% endif %}
+		{% endif %}
+	</div><br>
+            </div>
+        </div>
+
+        <div class=col-lg-7>
+            <div class="card">
+
+                <article class="content-body">
+                    <h2 class="title">{{ single_product.product_name }}</h2>
+
+                    <div class="mb-3"> 
+                        <var class="price h4"> <div class="rating-block rating-block-main rating-color-5"> {{single_product.averageReview}} &#9734; </div> ${{single_product.price}} </var> 
+                    </div> 
+                    
+                    <p>{{single_product.product_description}}</p>
+
+                    <hr>
+	<div class="row">
+		<div class="item-option-select">
+			<h6>Choose Color</h6>
+			<div class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
+			  <label class="btn btn-light">
+			    <input type="radio" name="radio_color"> Silver
+			  </label>
+			  <label class="btn btn-light">
+			    <input type="radio" name="radio_color" > Gray
+			  </label>
+			  <label class="btn btn-light active">
+			    <input type="radio" name="radio_color checked"> Gold
+			  </label>
+			  <label class="btn btn-light">
+			    <input type="radio" name="radio_color"> Black
+			  </label>
+			</div> 
+		</div>
+	</div> <!-- row.// -->
+	<div class="row">
+		<div class="item-option-select">
+			<h6>Select Size</h6>
+			<div class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
+			  <label class="btn btn-light">
+			    <input type="radio" name="radio_color"> S
+			  </label>
+			  <label class="btn btn-light active">
+			    <input type="radio" name="radio_color" checked> M
+			  </label>
+			  <label class="btn btn-light">
+			    <input type="radio" name="radio_color"> L
+			  </label>
+			  <label class="btn btn-light">
+			    <input type="radio" name="radio_color"> XL
+			  </label>
+			</div> 
+		</div>
+	</div> <!-- row.// -->
+	<hr>
+        <br><br><br>
+        <div class="row">
+            <div class='col-auto'> <h3>Customer Reviews </h3>   </div>
+			<div class='col-3 d-flex align-items-center'> <h6  class="text-secondary"> ( {{count}} Ratings ) </h6>   </div>
+			{% if user.is_authenticated %}
+            <div class='col-4 d-flex justify-content-end'> <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ReviewModal">
+               Rate product
+              </button>		{% endif %}		
+			  {% include 'review_form.html' %} 
+			</div>
+        </div><br>
+		{% for rating in ratings %}
+		{% if rating.review %}
+        <article class="box mb-3">
+            <div class="icontext w-100">
+                <div class="text">
+					<span class="date text-muted float-md-right">{{rating.created_at}} </span>  
+					<h6 class="mb-1"> <div class="rating-block rating-color-{{rating.rating}}"> {{rating.rating}} &#9734; </div>  {{rating.user.first_name}} {{rating.user.last_name}} </h6>
+                    <h6 class="mt-2">{{rating.subject}}</h6>
+                </div>
+            </div> <!-- icontext.// -->
+            <div class="mt-1">
+                <p>
+                    {{rating.review}}
+                </p>	
+            </div>
+        </article>
+		{% endif %}
+		{% endfor %}
+
+                </article>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+<script>
+
+	function delay(delayInms) {
+	return new Promise(resolve => {
+		setTimeout(() => {
+		resolve(2);
+		}, delayInms);
+	});
+	}
+
+	async function likeFunction() {
+    let element = document.getElementById("heart");
+	if (element.classList.contains("is-active")){
+		element.classList.remove("is-active");
+		window.location.replace("{% url 'remove_wishlist_detail'  single_product.id %}");
+	} else{
+		element.classList.add("is-active");
+		let delayres = await delay(500);
+    	window.location.replace("{% url 'add_wishlist_detail'  single_product.id %}");
+	};
+
+ }
+</script>
+
+{% endblock %}

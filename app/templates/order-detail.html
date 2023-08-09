@@ -1,0 +1,110 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block title %}
+Cart
+{% endblock %}
+
+{% block content %}
+
+<section class="section-conten padding-y bg">
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-6 col-12">
+            <div class="card">
+                <div class="card-header">
+                    Delivery Address
+                </div>
+                <div class='card-body'>
+                <h6> {{single_order.user.first_name}}{{single_order.user.last_name}} </h6>
+                   <p class="m-0">{{single_order.order.address.address}}, {{single_order.order.address.landmark}}, {{single_order.order.address.city}}</p>
+                   <p>{{single_order.order.address.pincode}} {{single_order.order.address.state}}</p>
+                            <h6> Phone Number  {{single_order.order.address.phone_number}}</h6> 
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-12">
+            <div class="card">
+                <div class="card-header">
+                    Product review
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                    <div class="col-6">
+                        <img class="ordered-product-image" src='{{single_order.product.product_image.url}} 'class='mb-0' alt='single_order_image'></img>
+                    </div>
+                    <div class='col-6'>
+                        <div class='col-12'> {{single_order.product.product_name}} </div>
+                        <div class='col-12'> {{single_order.product.price}} </div>
+                        <div class='col-12'> <a href="{% url 'get_invoice'  single_order.order.order_number %}"> Download Invoice </a> </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+<br><br>
+    <div class="col-12">
+        <div class="card">
+
+           <div class="col-md-12 col-12">
+                <div class="row p-5 pb-0">
+                <div class="col-3 d-flex justify-content-center ps-0">     
+                    <h6 style="color:#26a541;"> Ordered </h6>            
+                </div>
+                <div class="col-3 d-flex justify-content-center ps-0"> 
+                    <h6 class="shipped"> Shipped </h6> 
+                </div>
+                <div class="col-3 d-flex justify-content-center ps-0"> 
+                    <h6 class="out-for-delivery"> Out for delivery </h6> 
+                </div>
+                <div class="col-3 d-flex justify-content-center ps-0"> 
+                    <h6 class="recived"> Recived </h6> 
+                </div>
+            </div>
+
+            <div class="row p-5 pt-2">
+                <div class="col-3 d-flex justify-content-center p-0">     
+                    <hr class="col-5" style="color:white;">
+                    <span class="dot" style="background-color:#26a541;"></span>
+                    <hr class="col-6" id="shipped">
+                </div>
+                <div class="col-3 d-flex justify-content-center p-0"> 
+                    <hr class="col-5" id="shipped">
+                    <span class="dot" id="shipped"></span>
+                    <hr class="col-6 out-for-delivery">
+                </div>
+                <div class="col-3 d-flex justify-content-center p-0"> 
+                    <hr class="col-5 out-for-delivery">
+                    <span class="dot out-for-delivery"></span>
+                    <hr class="col-6 recived">
+                </div>
+                <div class="col-3 d-flex justify-content-center p-0"> 
+                    <hr class="col-5 recived">
+                    <span class="dot recived"></span>
+                    <hr class="col-6" style="color:white;">
+                </div>
+            </div>
+            </div>   
+            <div class='col-12 col-md-3'>
+           
+       </div>
+        </div>
+    </div>
+</div>
+{% include 'product-invoice.html' %}
+</section>
+
+<script>
+
+    let status = "{{single_order.order.status}}"
+    let element = document.getElementById(status);
+    let element2 = document.getElementById(status);
+    console.log(element2)
+    element.classList.add("success-green");
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,9 @@
+{
+    "debug.javascript.automaticallyTunnelRemoteServer": false,
+    "debug.javascript.debugByLinkOptions": null,
+    "debug.javascript.defaultRuntimeExecutable": {
+        
+
+        "pwa-node": "node"
+    }
+}

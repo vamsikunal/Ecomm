@@ -1,0 +1,73 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block title %}
+Verify
+{% endblock %}
+
+{% block content %}
+<link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css"/>
+<div class="container mt-5 pt-4">
+    
+    <div class="col-6 mx-auto">
+        <h3 class="text-center">Enter OTP sent to your number</h3>
+        {% if message %}
+        <div class="alert alert-{{class}}">
+            {{message}}
+        </div>
+        {% endif %}
+        <div class="container">
+            <h1 class="h3 text-center font-weight-light mb-4">{{phone_number}}</h1>
+            <form method="post">
+                {% csrf_token %}
+              <fieldset>
+                <div class="d-flex align-items-center justify-content-center">
+                  <div class="input-group justify-content-end flex-nowrap">
+                    <input type="text" name="digit1" class="form-control form-control--otp js-otp-input" inputmode="numeric" pattern="[0-9]*" autocomplete="one-time-code" required>
+                    <input type="text" name="digit2" class="form-control form-control--otp js-otp-input" inputmode="numeric" pattern="[0-9]*" required>
+                    <input type="text" name="digit3" class="form-control form-control--otp js-otp-input" inputmode="numeric" pattern="[0-9]*" required>
+                  </div>
+                  <div class="input-group-seperator"></div>
+                  <div class="input-group flex-nowrap">
+                    <input type="text" name="digit4" class="form-control form-control--otp js-otp-input" inputmode="numeric" pattern="[0-9]*" required>
+                    <input type="text" name="digit5" class="form-control form-control--otp js-otp-input" inputmode="numeric" pattern="[0-9]*" required>
+                    <input type="text" name="digit6" class="form-control form-control--otp js-otp-input" inputmode="numeric" pattern="[0-9]*" required>
+                  </div>
+                </div>   
+              </fieldset>
+              <br>
+              <div style="display: flex; justify-content: center;">
+              <button type="submit" class="btn btn-primary btn-block col-3 ml-8"> Submit  </button>
+            </div>
+            </form>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-3 mr-0"> <p class="text-black-50" id='countdown'>Resend OTP in 30 </p> </div>
+            <div class="col-6 mr-0 mp-0"> </div>
+            <div id='resend' class="col-3 text-right"> <a onclick="(repete())" href="{% url 'otp_generation' %}">Resend OTP </a></div>
+          </div>
+    </div>
+</div>
+<br><br><br><br><br><br><br><br><br>
+<script type ="text/javascript">
+
+  startTime = 30
+  setInterval(counter, 1000)
+  function counter() {
+    var countdownEL = document.getElementById('countdown')
+    if (startTime > 0) {
+    startTime = startTime - 1;
+    countdownEL.innerHTML = 'Resend OTP in ' + startTime
+    console.log(startTime)
+    document.getElementById('resend').style.visibility = 'hidden';}
+      else if(startTime <= 0){
+          document.getElementById('resend').style.visibility = 'visible';
+          countdownEL.style.visibility = 'hidden'}}
+  function repete() {
+      startTime = 30;
+  }   
+          
+  
+  </script>
+
+{% endblock %}

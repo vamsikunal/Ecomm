@@ -1,0 +1,36 @@
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="loginModalLabel">Sign In</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form action="{% url 'login' %}" method="post" >
+              {% include 'alert.html' %}
+                {% csrf_token %}
+                <div class="form-floating mb-3">
+                  <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" name="email">
+                  <label for="floatingInput">Email address</label>
+                </div>
+                <div class="form-floating">
+                  <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password">
+                  <label for="floatingPassword">Password</label>
+                </div>
+                <div class="form-group">
+                    <a href="{% url 'forgotpassword' %}" class="float-end"><p>Forgot password</p></a> 
+                </div> <!-- form-group form-check .// --><br>
+                <div class="form-group">
+                    <input type="submit" class="btn btn-primary btn-block col-12" value='Login'>
+                </div> <!-- form-group// -->    
+            </form>
+            <p class="text-center mt-4">Don't have account? <a href="{% url 'register' %}">Sign up</a></p>
+            </div> <!-- card-body.// -->
+          </div> <!-- card .// -->
+        
+           
+        </div>
+      </div>
+
+
+

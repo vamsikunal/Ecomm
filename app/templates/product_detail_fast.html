@@ -1,0 +1,90 @@
+{% load static %}
+<div class="modal fade" id="fastProductDetail" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="ModalLabel">Add new address</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+        
+                <div class="row no-gutters">
+                    <aside class="col-md-6">
+            <article class="gallery-wrap"> 
+                <div class="img-big-wrap">
+                   <a href="#"><img src="{{product.product_image.url }}"></a>
+                </div> <!-- img-big-wrap.// -->
+                
+            </article> <!-- gallery-wrap .end// -->
+                    </aside>
+                    <main class="col-md-6 border-start">
+            <article class="content-body">
+            
+            <h2 class="title">{{ product.product_name }}</h2>
+            
+            <div class="mb-3"> 
+                <var class="price h4">{{product.price}}</var> 
+            </div> 
+            
+            <p>{{product.product_description}}</p>
+            <hr>
+            <div class="row">
+                <div class="item-option-select">
+                    <h6>Choose Color</h6>
+                    <div class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
+                      <label class="btn btn-light">
+                        <input type="radio" name="radio_color"> Silver
+                      </label>
+                      <label class="btn btn-light">
+                        <input type="radio" name="radio_color" > Gray
+                      </label>
+                      <label class="btn btn-light active">
+                        <input type="radio" name="radio_color checked"> Gold
+                      </label>
+                      <label class="btn btn-light">
+                        <input type="radio" name="radio_color"> Black
+                      </label>
+                    </div> 
+                </div>
+            </div> <!-- row.// -->
+            <div class="row">
+                <div class="item-option-select">
+                    <h6>Select Size</h6>
+                    <div class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
+                      <label class="btn btn-light">
+                        <input type="radio" name="radio_color"> S
+                      </label>
+                      <label class="btn btn-light active">
+                        <input type="radio" name="radio_color" checked> M
+                      </label>
+                      <label class="btn btn-light">
+                        <input type="radio" name="radio_color"> L
+                      </label>
+                      <label class="btn btn-light">
+                        <input type="radio" name="radio_color"> XL
+                      </label>
+                    </div> 
+                </div>
+            </div> <!-- row.// -->
+                <hr>
+                {% if product.stock <=  0 %}
+                <h5> Out of stock </h5>
+                <!-- {% else %}
+                {% if in_cart%}
+                <a href="{% url 'cart' %}" class="btn  btn-success"> <span class="text">Already in cart</span> <i class="fas fa-shopping-cart"></i>  </a>
+                {% else %}
+                <a href="{% url 'add_cart'  product.id %}" class="btn  btn-primary"> <span class="text">Add to cart</span> <i class="fas fa-shopping-cart"></i>  </a>
+                {% endif %}
+                {% endif %} -->
+            </article> <!-- product-info-aside .// -->
+                    </main> <!-- col.// -->
+                </div> <!-- row.// -->
+    
+          
+        </div>
+      </div>
+    </div>
+    </div>
+
+
+
