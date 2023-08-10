@@ -1,16 +1,15 @@
-pipeline
-
-    agent {label 'jenkins-slave'}
+pipeline {
+    agent {
+        label 'jenkins-slave'
+    }
 
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub')
-        DATABASE_CREDENTIALS = credentials('database-cred')
     }
 
-    stages{
-
-        stage('gitclone'){
-            steps{
+    stages {
+        stage('gitclone') {
+            steps {
                 git branch: 'main', credentialsId: 'github_credentials', url: 'https://github.com/vamsikunal/ecomm'
             }
         }
@@ -23,7 +22,7 @@ pipeline
 
         stage('Docker login') {
             steps {
-                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                sh 'echo ${DOCKERHUB_CREDENTIALS_PSW} | docker login -u ${DOCKERHUB_CREDENTIALS_USR} --password-stdin'
             }
         }
 
@@ -39,3 +38,4 @@ pipeline
             sh 'docker logout'
         }
     }
+}
