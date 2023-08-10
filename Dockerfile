@@ -8,7 +8,8 @@ ENV DB_NAME \
 
 RUN mkdir /app
 COPY ./app /app
-COPY entrypoint.sh /entrypoint.sh
+COPY entrypoint.sh /app
+
 WORKDIR /app
 
 RUN python3 -m pip install Pillow
