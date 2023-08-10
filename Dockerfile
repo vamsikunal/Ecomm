@@ -13,9 +13,9 @@ COPY entrypoint.sh /app
 WORKDIR /app
 
 RUN python3 -m pip install Pillow
-RUN pip3 install -r /requirements.txt
-RUN chmod +x /entrypoint.sh
+RUN pip3 install -r requirements.txt
+RUN chmod +x entrypoint.sh
 
 EXPOSE 8000 
 
-CMD ["/entrypoint.sh"]
+CMD ["entrypoint.sh"]
