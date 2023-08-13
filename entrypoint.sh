@@ -10,9 +10,15 @@ if [ -z "$DB_PASSWORD" ]; then
     exit 1
 fi
 
-# Run Django database migrations
 python3 manage.py makemigrations
-python3 manage.py migrate
-python3 manage.py collectstatic --noinput
-# Start the Django development server
-python3 manage.py runserver 0.0.0.0:8000
+python manage.py collectstatic --noinput
+
+# Apply database migrations
+python manage.py migrate --noinput
+
+# Start Gunicorn to serve your Django application
+exec gunicorn ecomm.wsgi:application --bind 0.0.0.0:8000
+
+unlink /etc/nginx/sites-enabled/default
+
+nginx -g "daemon off;"
