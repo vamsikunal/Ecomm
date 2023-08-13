@@ -4,3 +4,5 @@ django-storages==1.11.1
 mysqlclient
 xhtml2pdf==0.2.5
 whitenoise
+gunicorn 
+psycopg2-binary
