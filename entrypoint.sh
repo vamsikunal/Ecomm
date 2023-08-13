@@ -5,9 +5,12 @@ if [ -z "$DB_NAME" ]; then
     exit 1
 fi
 
-if [ -z "$DB_PASSWORD" ]; then
+
+if [ -z "$DB_ENGINE" ]; then
+    if [ -z "$DB_PASSWORD" ]; then
     echo "Error: Database Password is not provided" >&2
     exit 1
+    fi
 fi
 
 python3 manage.py makemigrations
