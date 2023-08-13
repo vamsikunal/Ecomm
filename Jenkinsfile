@@ -18,18 +18,21 @@ pipeline {
 
         stage('Connect ECR'){
             steps {
+                // Connect to ECR
                 sh 'aws ecr get-login-password --region ${ECR_REGION} | docker login --username AWS --password-stdin ${ECR_REGISTRY}'
             }
         }
 
         stage('Build') {
             steps {
+                // Build the image and tag it with the ECR registry and the git commit hash
                 sh 'docker build -t ${ECR_REGISTRY}/ecomm:latest .'
             }
         }
 
         stage('Push') {
             steps {
+                // Push the image to ECR
                 sh 'docker push ${ECR_REGISTRY}/ecomm:latest'
             }
         }
