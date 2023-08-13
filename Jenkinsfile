@@ -4,7 +4,9 @@ pipeline {
     }
 
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub')
+        ECR_REGISTRY = credentials('ecr_registry')
+        ECR_REGION = credentials('ecr_region')
+        ECS_CLUSTER = credentials('ecs_cluster')
     }
 
     stages {
@@ -14,28 +16,44 @@ pipeline {
             }
         }
 
-        stage('Build') {
+        stage('Connect ECR'){
             steps {
-                sh 'docker build -t kunal1904/ecomm:latest .'
+                sh 'aws ecr get-login-password --region ${ECR_REGION} | docker login --username AWS --password-stdin ${ECR_REGISTRY}'
             }
         }
 
-        stage('Docker login') {
+        stage('Build') {
             steps {
-                sh 'echo ${DOCKERHUB_CREDENTIALS_PSW} | docker login -u ${DOCKERHUB_CREDENTIALS_USR} --password-stdin'
+                sh 'docker build -t ${ECR_REGISTRY}/ecomm:latest .'
             }
         }
 
         stage('Push') {
             steps {
-                sh 'docker push kunal1904/ecomm:latest'
+                sh 'docker push ${ECR_REGISTRY}/ecomm:latest'
+            }
+        }
+
+        stage('Deploy to ECS') {
+        steps {
+            script {
+                // Define the ECS service name and task definition name
+                def ECS_SERVICE_NAME = 'ecomm-service'
+                def ECS_TASK_DEFINITION = 'ecomm-task'
+
+                // Update ECS task definition with the new image
+                def taskDefinition = sh(script: "aws ecs describe-task-definition --task-definition ${ECS_TASK_DEFINITION}", returnStdout: true).trim()
+                def updatedTaskDefinition = taskDefinition.replaceAll(/"image":\s*".*"/, "\"image\": \"${ECR_REGISTRY}/ecomm:latest\"")
+
+                sh "echo '${updatedTaskDefinition}' > updated-task-definition.json"
+
+                // Register the updated task definition
+                sh "aws ecs register-task-definition --cli-input-json file://updated-task-definition.json"
+
+                // Update the ECS service with the new task definition
+                sh "aws ecs update-service --cluster ${ECS_CLUSTER} --service ${ECS_SERVICE_NAME} --task-definition ${ECS_TASK_DEFINITION}"
             }
         }
     }
-
-    post {
-        always {
-            sh 'docker logout'
-        }
     }
 }
