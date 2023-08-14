@@ -25,31 +25,24 @@ pipeline {
 
         stage('Build') {
             steps {
-<<<<<<< HEAD
-                // Build the image and tag it with the ECR registry and the git commit hash
-                sh 'docker build -t ${ECR_REGISTRY}/ecomm:latest .'
-=======
                 sh 'docker build -t ecomm:latest .'
             }
         }
 
         stage('Run Python Tests') {
             steps {
-                sh 'docker container run -e DB_NAME=ecomm.sqlite3 -e DB_ENGINE=django.db.backends.sqlite3 --name web --network chatbot -p 8000:8000 ecomm:latest'
+                sh 'docker container run -e DB_NAME=ecomm.sqlite3 -e DB_ENGINE=django.db.backends.sqlite3 --name web -p 8000:8000 ecomm:latest'
                 sh 'docker container exec web python manage.py test'
                 sh 'docker contianer stop web'
                 sh 'docker container rm web'
->>>>>>> kub-dev
             }
         }
 
         stage('Push') {
             steps {
-<<<<<<< HEAD
                 // Push the image to ECR
-=======
                 sh 'docker tag ecomm:latest ${ECR_REGISTRY}/ecomm:latest'
->>>>>>> kub-dev
+
                 sh 'docker push ${ECR_REGISTRY}/ecomm:latest'
             }
         }

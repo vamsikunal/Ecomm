@@ -10,7 +10,8 @@ ENV DB_NAME \
     DB_USER \
     DB_PASSWORD \
     DB_HOST \
-    DB_PORT
+    DB_PORT \
+    DB_ENGINE
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y nginx
