@@ -23,12 +23,13 @@ The entire Django application has been containerized using a Dockerfile. It is s
 - Docker installed on the host system.
 - Mysql database server (or Any database engine).
 
-#### Only for complete CI/CD setup
+#### Only for complete CI/CD and Cloud setup
+- AWS CLI on local system
 - Jenkins setup with master and EC2-based slave configuration.
 - Slave node configured with Docker and AWS CLI with proper IAM access.
 
 ### Local usage
-> If you want to run project on local system
+####  If you want to run project on local system
 
 1. Build docker image
 ```
@@ -40,20 +41,54 @@ docker build -t <image_name>:latest .
 docker container run -p 8000:8000 -e DB_NAME=<Database_Name> -e DB_PASSWORD=<password> -e DB_USER=<user> -e DB_HOST=<host> <image_name>:latest
 ```
 
-3. Container will be running at
+3. Container will be running at.
 ```
 localhost:8000
 ``` 
 
-> If you want to run project with compler CI/CD
+#### If you want to run project with complete CI/CD and cloud support
 
+> Host on ECS 
+
+1. Create a ECR registory 
+
+2. Build docker image locally
+```
+docker build -t <image_name>:latest .
+```
+3. Tag the image with ecr registory name. (PS - aws cli should be configured on local system)
+```
+docker tag <image_name>:latest <erc_repo_link>:latest.
+```
+4. Push the image on AWS ECR.
+```
+docker push <erc_repo_link>:latest.
+```
+5. Set up an ECS cluster for container management.
+
+6. Create an ECS task on the console, utilizing an ECR image and providing essential environment variables including database settings.
+
+7. Deploy the ECS task as a service on the ECS cluster for container execution and management.
+
+> CI/CD automation with jenkins
+
+1. Start by forking this repository and setting up your GitHub account credentials in Jenkins.
+
+2. In the Jenkinsfile, update '<GITHUB_URL>' with the URL of your forked repository.
+
+3. Configure text credentials in Jenkins to store ECR_REGISTRY, ECR_REGION, ECS_CLUSTER, ECS_TASK_DEFINITION, and ECS_SERVICE_NAME.
+
+4. Create a Jenkins app pipeline, specifying the GitHub repository and the target branch."
+
+5. Under the pipeline section in defination select Pipeline srcipt form SCM, select SCM as git and provide all details.
+
+6. Save the pipeline app.
 
 ## Contributing
-I welcome contributions from the community. To contribute for:
-- HTML and CSS enhancments
-- Add more testing scripts 
-- Database transition optmization
-- anything
-
+I'm open to contributions from the community. You can contribute by:
+- Enhancing HTML and CSS elements
+- Adding additional testing scripts
+- Optimizing database transition processes
+- Anything else you think can improve the project"
 
 
