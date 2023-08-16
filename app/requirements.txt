@@ -6,3 +6,4 @@ xhtml2pdf==0.2.5
 whitenoise
 gunicorn 
 psycopg2-binary
+mysql-connector-python

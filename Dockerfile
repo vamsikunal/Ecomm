@@ -22,7 +22,7 @@ RUN mkdir /app
 # Copy your application files
 COPY ./app /app
 COPY entrypoint.sh /app
-
+COPY database.sh /app
 # Set the working directory
 WORKDIR /app
 
@@ -32,7 +32,7 @@ RUN pip3 install -r requirements.txt
 
 # Make the entrypoint script executable
 RUN chmod +x ./entrypoint.sh
-
+RUN chmod +x ./database.sh
 # Copy the Nginx configuration file
 COPY ./nginx/nginx.conf /etc/nginx/sites-available/default
 
